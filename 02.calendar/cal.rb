@@ -1,3 +1,4 @@
+#!/tmp/ruby
 require 'date'
 
 def display_calendar(year, month)
