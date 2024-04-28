@@ -1,5 +1,6 @@
 #!/tmp/ruby
 require 'date'
+require 'optparse'
 
 def display_calendar(year, month)
   # 月の初めの曜日を取得し、カレンダーの最初の行を揃えるための空白を挿入
@@ -29,24 +30,16 @@ def display_calendar(year, month)
 end
 
 def main
-  if ARGV.empty?
-    today = Date.today
-    display_calendar(today.year, today.month)
-  elsif ARGV.length == 2 && ARGV[0] == '-m'
-    month = ARGV[1].to_i
-    year = Date.today.year
-    display_calendar(year, month)
-  elsif ARGV.length == 2 && ARGV[0] == '-y'
-    year = ARGV[1].to_i
-    month = Date.today.month
-    display_calendar(year, month)
-  elsif ARGV.length == 4 && ARGV[0] == '-m' && ARGV[2] == '-y'
-    month = ARGV[1].to_i
-    year = ARGV[3].to_i
-    display_calendar(year, month)
-  else
-    puts "Usage: ruby script.rb [-m <month>] [-y <year>]"
-  end
+  options = { year: Date.today.year, month: Date.today.month }
+  
+  OptionParser.new do |opt|
+    opt.on('-m VAL') {|v| options[:month] = v.to_i }
+    opt.on('-y VAL') {|v| options[:year] = v.to_i }
+  end.parse!
+
+  display_calendar(options[:year], options[:month])
+rescue OptionParser::InvalidOption, OptionParser::MissingArgument
+  puts "Usage: ruby script.rb [-m <month>] [-y <year>]"
 end
 
 main
