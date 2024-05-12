@@ -18,11 +18,12 @@ def display_calendar(year, month)
 
   # 1日から月の最終日までの日付を出力
   (Date.new(year, month, 1)..Date.new(year, month, -1)).each do |date|
+    convert_to_string_right_aligned = date.day.to_s.rjust(2)
     print "\n" if date.sunday?
     if Date.today == date
-      print "\e[7m#{date.day.to_s.rjust(2)}\e[0m "
+      print "\e[7m#{convert_to_string_right_aligned}\e[0m "
     else
-      print "#{date.day.to_s.rjust(2)} "
+      print "#{convert_to_string_right_aligned} "
     end
   end
   puts "\n"
