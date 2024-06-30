@@ -23,14 +23,11 @@ frames.push(current_frame)
 
 point = 0
 frames.each_with_index do |frame, index|
-  first, second, third = frame[0], frame[1], frame[2]
   strike_point = 10
-  point += first
-  point += second if !second.nil?
-  point += third if !third.nil?
+  point += frame.sum
 
   if index <= 8
-    if first == strike_point # strike
+    if frame[0] == strike_point # strike
       point += frames[index + 1][0]
       point += if frames[index + 1][1].nil?
                  frames[index + 2][0]
