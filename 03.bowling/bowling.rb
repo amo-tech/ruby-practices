@@ -23,18 +23,18 @@ frames.push(current_frame)
 
 point = 0
 frames.each_with_index do |frame, index|
-  strike_point = 10
+  pin_count = 10
   point += frame.sum
 
   if index <= 8
-    if frame[0] == strike_point # strike
+    if frame[0] == pin_count # strike
       point += frames[index + 1][0]
       point += if frames[index + 1][1].nil?
                  frames[index + 2][0]
                else
                  frames[index + 1][1]
                end
-    elsif frame.sum == strike_point # spare
+    elsif frame.sum == pin_count # spare
       point += frames[index + 1][0]
     end
   end
