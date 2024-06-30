@@ -1,10 +1,9 @@
 # frozen_string_literal: true
 
-scores = ARGV[0].split(',')
+scores = ARGV[0].split(',').map{|score| score == 'X' ? 10 : score.to_i}
 frames = []
 current_frame = []
 scores.each do |score|
-  score = score == 'X' ? 10 : score.to_i
   if frames.length == 9
     current_frame.push(score)
     next
@@ -24,29 +23,23 @@ frames.push(current_frame)
 
 point = 0
 frames.each_with_index do |frame, index|
-  first = frame[0]
-  second = frame[1]
-  third = frame[2]
+  first, second, third = frame[0], frame[1], frame[2]
+  strike_point = 10
+  point += first
+  point += second if !second.nil?
+  point += third if !third.nil?
+
   if index <= 8
-    if first == 10 # strike
-      point += 10
+    if first == strike_point # strike
       point += frames[index + 1][0]
       point += if frames[index + 1][1].nil?
                  frames[index + 2][0]
                else
                  frames[index + 1][1]
                end
-    elsif frame.sum == 10 # spare
-      point += 10
+    elsif frame.sum == strike_point # spare
       point += frames[index + 1][0]
-    else
-      point += first
-      point += second
     end
-  else # 最終フレーム
-    point += first
-    point += second if !second.nil?
-    point += third if !third.nil?
   end
 end
 puts point
